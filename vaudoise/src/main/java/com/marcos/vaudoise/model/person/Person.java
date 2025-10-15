@@ -1,45 +1,32 @@
 package com.marcos.vaudoise.model.person;
 
+import com.marcos.vaudoise.model.client.Client;
 import com.marcos.vaudoise.util.StringUtils;
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.UUID;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "person")
 @Entity
-public class Person {
-
-    @Id
-    @GeneratedValue
-    @UuidGenerator
-    @Column(name = "id", nullable = false, updatable = false, columnDefinition = "default gen_random_uuid()")
-    private UUID id;
-
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "phone", nullable = false)
-    private String phone;
-
-    @Column(name = "email", nullable = false)
-    private String email;
+@Table(name = "person")
+@PrimaryKeyJoinColumn(name = "client_id")
+public class Person extends Client {
 
     @Column(name = "birth_date", nullable = false, updatable = false)
     private LocalDate birthDate;
 
     public Person(PersonDTO personDTO) {
-        this.name = personDTO.getName();
-        this.phone = personDTO.getPhone();
-        this.email = personDTO.getEmail();
+        super(personDTO);
         this.birthDate = StringUtils.parseToDate(personDTO.getBirthDate());
     }
 }
