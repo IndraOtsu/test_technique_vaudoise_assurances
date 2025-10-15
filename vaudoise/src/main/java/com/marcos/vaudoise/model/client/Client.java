@@ -1,5 +1,7 @@
 package com.marcos.vaudoise.model.client;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.marcos.vaudoise.model.Contract.Contract;
 import com.marcos.vaudoise.model.company.CompanyDTO;
 import com.marcos.vaudoise.model.person.PersonDTO;
 import jakarta.persistence.*;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -34,6 +37,10 @@ public class Client {
 
     @Column(name = "email", nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = false)
+    @JsonManagedReference
+    private List<Contract> contractList;
 
     public Client(PersonDTO personDTO) {
         this.name = personDTO.getName();
