@@ -1,1 +1,11 @@
-spring.application.name=vaudoise
+server:
+  port: 8085
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?useTimezone=true&serverTimezone=Europe/Paris&enabledTLSProtocols=TLSv1.2
+    username: postgres
+    password: Vaudoise_Cest_Cool_1410
