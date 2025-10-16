@@ -3,8 +3,6 @@ package com.marcos.vaudoise.service;
 import com.marcos.vaudoise.model.company.Company;
 import com.marcos.vaudoise.model.company.CompanyDTO;
 import com.marcos.vaudoise.model.company.CompanyRepository;
-import com.marcos.vaudoise.model.person.Person;
-import com.marcos.vaudoise.model.person.PersonDTO;
 import com.marcos.vaudoise.util.StringUtils;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.http.HttpStatus;

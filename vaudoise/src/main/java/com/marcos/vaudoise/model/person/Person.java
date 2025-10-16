@@ -27,6 +27,6 @@ public class Person extends Client {
 
     public Person(PersonDTO personDTO) {
         super(personDTO);
-        this.birthDate = StringUtils.parseToDate(personDTO.getBirthDate());
+        this.birthDate = StringUtils.parseToLocalDate(personDTO.getBirthDate());
     }
 }

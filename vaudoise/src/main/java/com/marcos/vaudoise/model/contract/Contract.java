@@ -1,7 +1,9 @@
-package com.marcos.vaudoise.model.Contract;
+package com.marcos.vaudoise.model.contract;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.marcos.vaudoise.model.client.Client;
+import com.marcos.vaudoise.util.StringUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -26,20 +29,27 @@ public class Contract {
     private UUID id;
 
     @Column(name = "start_date", nullable = false)
-    private String startDate;
+    private Date startDate;
 
+    @JsonIgnore
     @Column(name = "update_date", nullable = false)
-    private String updateDate;
+    private Date updateDate;
 
     @Column(name = "end_date", nullable = true)
-    private String endDate;
+    private Date endDate;
 
     @Column(name = "cost_amount", nullable = false)
-    private String costAmount;
+    private float costAmount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = true)
     private Client client;
 
+    public Contract(ContractDTO contractDTO) {
+        this.startDate = StringUtils.parseToDate(contractDTO.getStartDate());
+        this.endDate = contractDTO.getEndDate() != null ? StringUtils.parseToDate(contractDTO.getEndDate()) : null;
+        this.updateDate = new Date();
+        this.costAmount = contractDTO.getCostAmount();
+    }
 }

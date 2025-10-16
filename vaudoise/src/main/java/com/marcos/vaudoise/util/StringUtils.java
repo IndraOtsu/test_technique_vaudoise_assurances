@@ -2,16 +2,19 @@ package com.marcos.vaudoise.util;
 
 import lombok.extern.apachecommons.CommonsLog;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 @CommonsLog
 public class StringUtils {
 
-    public static boolean isValidISO8601Date(String dateString) {
+    public static boolean isValidISO8601LocalDate(String dateString) {
         if (dateString == null || dateString.isEmpty()) {
             return false;
         }
@@ -33,7 +36,20 @@ public class StringUtils {
         }
     }
 
-    public static LocalDate parseToDate(String inputDate) {
+    public static boolean isValidISO8601Date(String dateString) {
+        if (dateString == null || dateString.isEmpty()) {
+            return false;
+        }
+
+        try {
+            Instant.parse(dateString);
+            return true;
+        } catch (DateTimeParseException ignored) {
+            throw new IllegalArgumentException("Invalid ISO 8601 date-time format: " + dateString);
+        }
+    }
+
+    public static LocalDate parseToLocalDate(String inputDate) {
         String normalized = inputDate.replace("/", "-");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -41,6 +57,15 @@ public class StringUtils {
         return LocalDate.parse(normalized, formatter);
     }
 
+    public static Date parseToDate(String dateTimeString) {
+        try {
+            Instant instant = Instant.parse(dateTimeString);
+            return Date.from(instant);
+        } catch (DateTimeParseException e) {
+            log.error("Invalid ISO 8601 date-time format: " + e.getMessage());
+            throw new IllegalArgumentException("Invalid ISO 8601 date-time format: " + dateTimeString, e);
+        }
+    }
 
     public static boolean isValidEmail(String email) {
         if (email == null || email.isEmpty()) {
@@ -60,5 +85,34 @@ public class StringUtils {
         return Pattern.compile(phoneRegex)
                       .matcher(phone.trim())
                       .matches();
+    }
+
+    public static boolean isValidCostAmount(float amount) {
+        if (!Float.isFinite(amount)) {
+            return false;
+        }
+
+        final BigDecimal upper = new BigDecimal("1000000000");
+
+        final BigDecimal bd;
+        try {
+            bd = new BigDecimal(Float.toString(amount)).stripTrailingZeros();
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+
+        int scale = bd.scale();
+        if (scale < 0) {
+            scale = 0;
+        }
+        if (scale > 2) {
+            return false;
+        }
+
+        if (bd.signum() < 0) {
+            return false;
+        }
+
+        return bd.compareTo(upper) <= 0;
     }
 }

@@ -1,8 +1,8 @@
 package com.marcos.vaudoise.model.client;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.marcos.vaudoise.model.Contract.Contract;
 import com.marcos.vaudoise.model.company.CompanyDTO;
+import com.marcos.vaudoise.model.contract.Contract;
 import com.marcos.vaudoise.model.person.PersonDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

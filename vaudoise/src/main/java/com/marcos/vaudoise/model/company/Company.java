@@ -1,13 +1,14 @@
 package com.marcos.vaudoise.model.company;
 
 import com.marcos.vaudoise.model.client.Client;
-import com.marcos.vaudoise.model.person.PersonDTO;
-import com.marcos.vaudoise.util.StringUtils;
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
-
-import java.util.UUID;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor

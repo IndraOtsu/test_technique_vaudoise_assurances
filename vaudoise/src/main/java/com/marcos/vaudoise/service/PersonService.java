@@ -68,7 +68,7 @@ public class PersonService {
 
     private boolean fieldValidator(PersonDTO person) {
 
-        return (person.getBirthDate() == null || StringUtils.isValidISO8601Date(person.getBirthDate())) &&
+        return (person.getBirthDate() == null || StringUtils.isValidISO8601LocalDate(person.getBirthDate())) &&
                 StringUtils.isValidEmail(person.getEmail()) &&
                 StringUtils.isValidPhone(person.getPhone());
     }

@@ -1,6 +1,5 @@
 package com.marcos.vaudoise.model.person;
 
-import org.hibernate.query.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
