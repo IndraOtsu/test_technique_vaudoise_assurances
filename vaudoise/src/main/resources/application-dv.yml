@@ -6,6 +6,6 @@ spring:
       ddl-auto: none
     show-sql: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?useTimezone=true&serverTimezone=Europe/Paris&enabledTLSProtocols=TLSv1.2
-    username: postgres
+    url: jdbc:postgresql://localhost:5432/Vaudoise?useTimezone=true&serverTimezone=Europe/Paris&enabledTLSProtocols=TLSv1.2
+    username: root
     password: Vaudoise_Cest_Cool_1410

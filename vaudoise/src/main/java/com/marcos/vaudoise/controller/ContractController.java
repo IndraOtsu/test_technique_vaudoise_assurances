@@ -2,6 +2,7 @@ package com.marcos.vaudoise.controller;
 
 import com.marcos.vaudoise.model.contract.Contract;
 import com.marcos.vaudoise.model.contract.ContractDTO;
+import com.marcos.vaudoise.model.contract.ContractSumDTO;
 import com.marcos.vaudoise.service.ContractService;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,16 @@ public class ContractController {
 
     @GetMapping(value = "", produces = "application/json")
     public List<Contract> getAll(@RequestParam(value = "inactive", defaultValue = "false") Optional<Boolean> inactive,
-            @RequestParam("update_date") Optional<String> updateDate,
-            @RequestParam("client_id") Optional<UUID> clientId) {
+                                 @RequestParam("update_date") Optional<String> updateDate,
+                                 @RequestParam("client_id") Optional<UUID> clientId) {
         log.info("Requested get all companies route");
         return contractService.getAll(clientId, updateDate, inactive);
+    }
+
+    @GetMapping(value = "sum/{client_id}", produces = "application/json")
+    public ContractSumDTO returnSumOfContracts(@PathVariable("client_id") UUID clientId) {
+        log.info("Requested get sum of contracts by client id route");
+        return contractService.getSumOfContractsByClientId(clientId);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
@@ -33,6 +40,8 @@ public class ContractController {
         log.info("Requested get contract by id route");
         return contractService.getById(id);
     }
+
+
     @PostMapping(value = "", consumes = "application/json", produces = "application/json")
     public Contract create(@RequestBody ContractDTO contract) {
         log.info("Requested create contract route");

@@ -1,10 +1,7 @@
 package com.marcos.vaudoise.service;
 
 import com.marcos.vaudoise.model.client.Client;
-import com.marcos.vaudoise.model.contract.Contract;
-import com.marcos.vaudoise.model.contract.ContractDTO;
-import com.marcos.vaudoise.model.contract.ContractRepository;
-import com.marcos.vaudoise.model.contract.ContractSpecification;
+import com.marcos.vaudoise.model.contract.*;
 import com.marcos.vaudoise.util.StringUtils;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.jpa.domain.Specification;
@@ -50,6 +47,11 @@ public class ContractService {
         }
 
         return contractRepository.findAll(spec);
+    }
+
+    public ContractSumDTO getSumOfContractsByClientId(UUID clientId) {
+        log.info("Requested get sum of contracts by client id service");
+        return new ContractSumDTO(contractRepository.getTotalCostAmountByClientId(clientId), clientId);
     }
 
     public Optional<Contract> getById(UUID id) {
