@@ -1,0 +1,150 @@
+package com.marcos.vaudoise.util;
+
+import lombok.extern.apachecommons.CommonsLog;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.Date;
+import java.util.regex.Pattern;
+
+@CommonsLog
+public class StringUtils {
+
+    public static boolean isValidISO8601LocalDate(String dateString) {
+        if (dateString == null || dateString.isEmpty()) {
+            return false;
+        }
+        DateTimeFormatter dash = DateTimeFormatter.ofPattern("uuuu-MM-dd")
+                .withResolverStyle(ResolverStyle.STRICT);
+        DateTimeFormatter slash = DateTimeFormatter.ofPattern("uuuu/MM/dd")
+                .withResolverStyle(ResolverStyle.STRICT);
+        try {
+            LocalDate.parse(dateString, dash);
+            return true;
+        } catch (DateTimeParseException ignored) {
+            try {
+                LocalDate.parse(dateString, slash);
+                return true;
+            } catch (DateTimeParseException e) {
+                log.error("Invalid date format: " + e.getMessage());
+                return false;
+            }
+        }
+    }
+
+    public static boolean isValidISO8601Date(String dateString) {
+        if (dateString == null || dateString.isEmpty()) {
+            return false;
+        }
+
+        try {
+            Instant.parse(dateString);
+            return true;
+        } catch (DateTimeParseException ignored) {
+            throw new IllegalArgumentException("Invalid ISO 8601 date-time format: " + dateString);
+        }
+    }
+
+    public static LocalDate parseToLocalDate(String inputDate) {
+        String normalized = inputDate.replace("/", "-");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        return LocalDate.parse(normalized, formatter);
+    }
+
+    public static LocalDateTime parseToLocalDateTime(String inputDate) {
+        if (inputDate == null || inputDate.trim().isEmpty()) {
+            throw new IllegalArgumentException("inputDate cannot be null or empty");
+        }
+        String normalized = inputDate.replace("/", "-").trim();
+
+        // Try plain date (yyyy-MM-dd)
+        try {
+            return LocalDateTime.parse(normalized, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException ignored) {}
+
+        // Try local date-time (yyyy-MM-dd'T'HH:mm[:ss[.SSS]])
+        try {
+            return LocalDateTime.parse(normalized, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        } catch (DateTimeParseException ignored) {}
+
+        // Try offset/date-time with timezone or offset
+        try {
+            return OffsetDateTime.parse(normalized).toLocalDateTime();
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date or date-time format: " + inputDate, e);
+        }
+    }
+
+    public static Date parseToDate(String dateTimeString) {
+        try {
+            LocalDateTime ldt;
+            try {
+                ldt = OffsetDateTime.parse(dateTimeString).toLocalDateTime();
+            } catch (DateTimeParseException ignored) {
+                ldt = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            }
+            Instant instant = ldt.atOffset(java.time.ZoneOffset.UTC).toInstant();
+            return Date.from(instant);
+        } catch (DateTimeParseException e) {
+            log.error("Invalid ISO 8601 date-time format: " + e.getMessage());
+            throw new IllegalArgumentException("Invalid ISO 8601 date-time format: " + dateTimeString, e);
+        }
+    }
+
+    public static boolean isValidEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+        String emailRegex = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$";
+        return Pattern.compile(emailRegex, Pattern.CASE_INSENSITIVE)
+                      .matcher(email)
+                      .matches();
+    }
+
+    public static boolean isValidPhone(String phone) {
+        if (phone == null || phone.isEmpty()) {
+            return false;
+        }
+        String phoneRegex = "^\\+[1-9]\\d{6,14}$";
+        return Pattern.compile(phoneRegex)
+                      .matcher(phone.trim())
+                      .matches();
+    }
+
+    public static boolean isValidCostAmount(float amount) {
+        if (!Float.isFinite(amount)) {
+            return false;
+        }
+
+        final BigDecimal upper = new BigDecimal("1000000000");
+
+        final BigDecimal bd;
+        try {
+            bd = new BigDecimal(Float.toString(amount)).stripTrailingZeros();
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+
+        int scale = bd.scale();
+        if (scale < 0) {
+            scale = 0;
+        }
+        if (scale > 2) {
+            return false;
+        }
+
+        if (bd.signum() < 0) {
+            return false;
+        }
+
+        return bd.compareTo(upper) <= 0;
+    }
+}
