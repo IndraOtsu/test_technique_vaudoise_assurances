@@ -17,13 +17,10 @@ public class ContractSpecification {
         return (root, query, cb) -> {
             if (!inactive) {
                 // inactive = false => end_date > now
-                return cb.greaterThan(root.get("endDate"), new Date());
-            } else {
-                return cb.or(
-                        cb.lessThanOrEqualTo(root.get("endDate"), new Date()),
-                        cb.isNull(root.get("endDate"))
-                );
+                return cb.or(cb.greaterThan(root.get("endDate"), new Date()),
+                        cb.isNull(root.get("endDate")));
             }
+            return null;
         };
     }
 
