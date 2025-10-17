@@ -1,0 +1,506 @@
+{
+	"info": {
+		"_postman_id": "5e496129-b87d-409e-9d64-b015a7ce1d9e",
+		"name": "Vaudoise",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9167204"
+	},
+	"item": [
+		{
+			"name": "Person",
+			"item": [
+				{
+					"name": "Get All People",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/person",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Person By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/person/{{Person-ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"person",
+								"{{Person-ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Person",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Marcos-test\",\r\n    \"phone\": \"+376684972\",\r\n    \"email\": \"test@test.ad\",\r\n    \"birth_date\": \"1999-01-15\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/person",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Person",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Marcos-test\",\r\n    \"phone\": \"+376684972\",\r\n    \"email\": \"test@testa.ad\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/person/{{Person-ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"person",
+								"{{Person-ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Person",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/person/{{Person-ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"person",
+								"{{Person-ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Get All Clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/client",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Clients By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/client/{{Client-ID}}?update_date=2025-10-16T22:32:40.000+00:00",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"client",
+								"{{Client-ID}}"
+							],
+							"query": [
+								{
+									"key": "inactive",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "update_date",
+									"value": "2025-10-16T22:32:40.000+00:00"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "Get All Company",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/company",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/company/{{Company-ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"company",
+								"{{Company-ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Company",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Marcos-company\",\r\n    \"phone\": \"+3766849721\",\r\n    \"email\": \"test@company.ad\",\r\n    \"company_identifier\": \"AAA-123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/company",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Company",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Marcos-test\",\r\n    \"phone\": \"+376684972\",\r\n    \"email\": \"test@testa.ad\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/company/{{Company-ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"company",
+								"{{Company-ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Company",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/company/{{Company-ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"company",
+								"{{Company-ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contract",
+			"item": [
+				{
+					"name": "Get All Contract",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/contract",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"contract"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": "{{Client-ID}}",
+									"disabled": true
+								},
+								{
+									"key": "inactive",
+									"value": "false",
+									"description": "False by default, if true, returns the expired contracts as well",
+									"disabled": true
+								},
+								{
+									"key": "update_date",
+									"value": "2025-10-17T18:00:25Z",
+									"description": "Filter by update date onwards",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contract total per client",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/contract/sum/{{Client-ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"contract",
+								"sum",
+								"{{Client-ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contract By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/contract/{{Contract-ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"contract",
+								"{{Contract-ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contract",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Marcos-company\",\r\n    \"phone\": \"+3766849721\",\r\n    \"email\": \"test@company.ad\",\r\n    \"company_identifier\": \"AAA-123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/company",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Contract",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cost_amount\": \"11.0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/contract/{{Company-ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"contract",
+								"{{Company-ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Contract",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/contract/{{Company-ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"contract",
+								"{{Company-ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test",
+			"item": [
+				{
+					"name": "Generate Data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/test/generate_data?client_amount=1&contract_amount_per_client=1000",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"test",
+								"generate_data"
+							],
+							"query": [
+								{
+									"key": "client_amount",
+									"value": "1"
+								},
+								{
+									"key": "contract_amount_per_client",
+									"value": "1000"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/smoke",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"smoke"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "Company-ID",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "Person-ID",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "Contract-ID",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "Client-ID",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
