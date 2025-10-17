@@ -5,6 +5,8 @@ import lombok.extern.apachecommons.CommonsLog;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
@@ -57,9 +59,39 @@ public class StringUtils {
         return LocalDate.parse(normalized, formatter);
     }
 
+    public static LocalDateTime parseToLocalDateTime(String inputDate) {
+        if (inputDate == null || inputDate.trim().isEmpty()) {
+            throw new IllegalArgumentException("inputDate cannot be null or empty");
+        }
+        String normalized = inputDate.replace("/", "-").trim();
+
+        // Try plain date (yyyy-MM-dd)
+        try {
+            return LocalDateTime.parse(normalized, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException ignored) {}
+
+        // Try local date-time (yyyy-MM-dd'T'HH:mm[:ss[.SSS]])
+        try {
+            return LocalDateTime.parse(normalized, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        } catch (DateTimeParseException ignored) {}
+
+        // Try offset/date-time with timezone or offset
+        try {
+            return OffsetDateTime.parse(normalized).toLocalDateTime();
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date or date-time format: " + inputDate, e);
+        }
+    }
+
     public static Date parseToDate(String dateTimeString) {
         try {
-            Instant instant = Instant.parse(dateTimeString);
+            LocalDateTime ldt;
+            try {
+                ldt = OffsetDateTime.parse(dateTimeString).toLocalDateTime();
+            } catch (DateTimeParseException ignored) {
+                ldt = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            }
+            Instant instant = ldt.atOffset(java.time.ZoneOffset.UTC).toInstant();
             return Date.from(instant);
         } catch (DateTimeParseException e) {
             log.error("Invalid ISO 8601 date-time format: " + e.getMessage());

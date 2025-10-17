@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -29,14 +29,14 @@ public class Contract {
     private UUID id;
 
     @Column(name = "start_date", nullable = false)
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @JsonIgnore
     @Column(name = "update_date", nullable = false)
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
     @Column(name = "end_date", nullable = true)
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "cost_amount", nullable = false)
     private float costAmount;
@@ -47,9 +47,9 @@ public class Contract {
     private Client client;
 
     public Contract(ContractDTO contractDTO) {
-        this.startDate = StringUtils.parseToDate(contractDTO.getStartDate());
-        this.endDate = contractDTO.getEndDate() != null ? StringUtils.parseToDate(contractDTO.getEndDate()) : null;
-        this.updateDate = new Date();
+        this.startDate = StringUtils.parseToLocalDateTime(contractDTO.getStartDate());
+        this.endDate = contractDTO.getEndDate() != null ? StringUtils.parseToLocalDateTime(contractDTO.getEndDate()) : null;
+        this.updateDate = LocalDateTime.now();
         this.costAmount = contractDTO.getCostAmount();
     }
 }

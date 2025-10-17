@@ -21,9 +21,11 @@ public class ContractController {
     }
 
     @GetMapping(value = "", produces = "application/json")
-    public List<Contract> getAll() {
+    public List<Contract> getAll(@RequestParam(value = "inactive", defaultValue = "false") Optional<Boolean> inactive,
+            @RequestParam("update_date") Optional<String> updateDate,
+            @RequestParam("client_id") Optional<UUID> clientId) {
         log.info("Requested get all companies route");
-        return contractService.getAll();
+        return contractService.getAll(clientId, updateDate, inactive);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
@@ -31,7 +33,6 @@ public class ContractController {
         log.info("Requested get contract by id route");
         return contractService.getById(id);
     }
-
     @PostMapping(value = "", consumes = "application/json", produces = "application/json")
     public Contract create(@RequestBody ContractDTO contract) {
         log.info("Requested create contract route");

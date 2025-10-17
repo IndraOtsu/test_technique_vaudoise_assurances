@@ -4,13 +4,15 @@ import com.marcos.vaudoise.model.client.Client;
 import com.marcos.vaudoise.model.contract.Contract;
 import com.marcos.vaudoise.model.contract.ContractDTO;
 import com.marcos.vaudoise.model.contract.ContractRepository;
+import com.marcos.vaudoise.model.contract.ContractSpecification;
 import com.marcos.vaudoise.util.StringUtils;
 import lombok.extern.apachecommons.CommonsLog;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,9 +28,28 @@ public class ContractService {
         this.clientService = clientService;
     }
 
-    public List<Contract> getAll() {
+    public List<Contract> getAll(Optional<UUID> clientId, Optional<String> updateDate, Optional<Boolean> inactive) {
         log.info("Requested get all people service");
-        return contractRepository.findAll();
+        Specification<Contract> spec = Specification.unrestricted();
+
+        if (clientId.isPresent()) {
+            spec = spec.and(ContractSpecification.hasClientId(clientId.get()));
+        }
+
+        if (inactive.isPresent()) {
+            spec = spec.and(ContractSpecification.isActive(inactive.get()));
+        }
+
+        if (updateDate.isPresent()) {
+            try {
+                LocalDateTime date = StringUtils.parseToLocalDateTime(updateDate.get());
+                spec = spec.and(ContractSpecification.updatedAfter(date));
+            } catch (Exception e) {
+                throw new RuntimeException("Invalid date format. Expected yyyy-MM-dd");
+            }
+        }
+
+        return contractRepository.findAll(spec);
     }
 
     public Optional<Contract> getById(UUID id) {
@@ -66,7 +87,7 @@ public class ContractService {
         if (existingPerson.isPresent()) {
             Contract updContract = existingPerson.get();
             updContract.setCostAmount(contract.getCostAmount());
-            updContract.setUpdateDate(new Date());
+            updContract.setUpdateDate(LocalDateTime.now());
             contractRepository.save(updContract);
             return updContract;
         } else {
