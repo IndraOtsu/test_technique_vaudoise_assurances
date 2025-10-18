@@ -18,8 +18,12 @@ import java.util.UUID;
 public class PersonService {
 
     private final PersonRepository personRepository;
-    public PersonService(PersonRepository personRepository) {
+    private final ContractService contractService;
+
+    // Added alternate constructor for injection of ContractRepository
+    public PersonService(PersonRepository personRepository, ContractService contractService) {
         this.personRepository = personRepository;
+        this.contractService = contractService;
     }
 
     public List<Person> getAll() {
@@ -44,6 +48,7 @@ public class PersonService {
 
     public String delete(UUID id) {
         log.info("Requested delete person service");
+        contractService.deleteClientRelation(id);
         personRepository.deleteById(id);
         return "Person deleted successfully";
     }

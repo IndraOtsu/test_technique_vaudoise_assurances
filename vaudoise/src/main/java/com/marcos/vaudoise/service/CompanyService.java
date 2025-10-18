@@ -18,8 +18,10 @@ import java.util.UUID;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
-    public CompanyService(CompanyRepository companyRepository) {
+    private final ContractService contractService;
+    public CompanyService(CompanyRepository companyRepository, ContractService contractService) {
         this.companyRepository = companyRepository;
+        this.contractService = contractService;
     }
 
     public List<Company> getAll() {
@@ -44,6 +46,7 @@ public class CompanyService {
 
     public String delete(UUID id) {
         log.info("Requested delete company service");
+        contractService.deleteClientRelation(id);
         companyRepository.deleteById(id);
         return "Company deleted successfully";
     }
