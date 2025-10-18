@@ -97,6 +97,19 @@ public class ContractService {
         }
     }
 
+    public void deleteClientRelation(UUID clientId) {
+        List<Contract> contracts = contractRepository.findAllByClient_Id(clientId);
+        if (contracts != null && !contracts.isEmpty()) {
+            LocalDateTime now = LocalDateTime.now();
+            for (Contract c : contracts) {
+                c.setClient(null);
+                c.setEndDate(null);
+                c.setUpdateDate(now);
+            }
+            contractRepository.saveAll(contracts);
+        }
+    }
+
     private boolean fieldValidator(ContractDTO contract) {
 
         return (contract.getStartDate() == null || StringUtils.isValidISO8601Date(contract.getStartDate())) &&
